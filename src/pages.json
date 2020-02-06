@@ -5,6 +5,18 @@
 			"style": {
 				"navigationBarTitleText": "uni-app"
 			}
+		},
+		{
+			"path": "pages/travelmap/amap/amap",
+			"style": {
+				"navigationBarTitleText": "amap"
+			}
+		},
+		{
+			"path": "pages/travelmap/unimap/unimap",
+			"style": {
+				"navigationBarTitleText": "unimap"
+			}
 		}
 	],
 	"globalStyle": {
