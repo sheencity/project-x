@@ -18,6 +18,17 @@
                             </picker>
                         </view>
                     </view>
+                    <view class="uni-list-cell">
+                        <view class="uni-list-cell-left">
+                            车次
+                        </view>
+                        <view class="uni-list-cell-db">
+                            <uni-search-bar 
+                                placeholder="车次(选填)"
+                                @confirm="search">
+                            </uni-search-bar>
+                        </view>
+                    </view>
                 </view>
                 <view class="slice">
                 </view>
@@ -34,15 +45,15 @@
 	</view>
 </template>
 <script>    
+    import uniSearchBar from "@/components/uni-search-bar/uni-search-bar.vue"
 	export default {
+        components: {  
+            uniSearchBar  
+        },
 		data() {
     		return {
                 title: 'map',
                 polylines: [],
-                // location:{
-                // 　　latitude: 0,
-                // 　　longitude: 0,
-                // },
                 covers:[
                     // {
                     //     id: 1,
@@ -52,7 +63,9 @@
                     //     title: 'test'
                     // }
                 ],
-                date: '2020-01-19'
+                date: '2020-01-19',
+				searchInput: ''
+				
 			}
         },
         computed: {
@@ -77,17 +90,18 @@
             this.refreshMapCovers();
         },
         methods: {
-            bindDateChange: function(e) {
+            bindDateChange(e) {
                 console.log('date changed');
                 this.date = e.target.value;
                 this.refreshMapCovers();
             },
-            refreshMapCovers(date){
+            refreshMapCovers(){
                 let that = this;
                 uni.request({
                     url:'https://service-9nqsnd2b-1301203847.bj.apigw.tencentcs.com/release/js_func',
                     data:{
-                        date:that.date
+                        date:that.date,
+						no: that.searchInput
                     }
                 }).then(data=>{
                     var [error, res]  = data;
@@ -123,7 +137,13 @@
                 day = day > 9 ? day : '0' + day;
             
                 return `${year}-${month}-${day}`;
-            }
+            },
+			search(e){
+				console.log('onSearch');
+				console.log(e);
+				this.searchInput = e.value;
+				this.refreshMapCovers();
+			}
         }
        		
 	}
@@ -135,6 +155,6 @@
 		height: 400upx;
     }
     .slice {
-        height: 100upx;
+        height: 20upx;
     }
 </style>
