@@ -1,21 +1,15 @@
 {
-	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
-		{
-			"path": "pages/index/index",
-			"style": {
-				"navigationBarTitleText": "uni-app"
-			}
-		},
-		{
-			"path": "pages/travelmap/amap/amap",
-			"style": {
-				"navigationBarTitleText": "amap"
-			}
-		},
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages	
 		{
 			"path": "pages/travelmap/unimap/unimap",
 			"style": {
-				"navigationBarTitleText": "unimap"
+				"navigationBarTitleText": "患者同程查询"
+			}
+		},
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "同程查询2020"
 			}
 		}
 	],

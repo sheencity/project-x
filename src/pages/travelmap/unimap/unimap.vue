@@ -1,7 +1,7 @@
 <template>
-	<view>
-		<!-- <page-head :title="title"></page-head> -->
-		<view class="uni-padding-wrap uni-common-mt">
+	<view class="content">
+		<view class="uni-common-mt">
+            
             <view class="uni-flex uni-column">
                 <view class="uni-list">
                     <view class="uni-list-cell">
@@ -19,11 +19,13 @@
                         </view>
                     </view>
                 </view>
+                <view class="slice">
+                </view>
                 <view >
                     <map 
                         style="width: 750rpx; height: 750rpx;" 
-                        :latitude="latitude" 
-                        :longitude="longitude" 
+                        :latitude="location.latitude" 
+                        :longitude="location.longitude" 
                         :markers="covers"
                         :polyline="polylines">
                     </map>
@@ -33,8 +35,6 @@
 	</view>
 </template>
 <script>
-    import MapLoader from 'assets/amap.js'
-
     function getDate(type) {
 		const date = new Date();
 	
@@ -60,18 +60,20 @@
     		return {
                 title: 'map',
                 polylines: [],
-            　　latitude: 40.013305,
-            　　longitude: 118.685713,
+                location:{
+                　　latitude: 0,
+                　　longitude: 0,
+                },
                 covers:[
                     {
                         id: 1,
-                　　latitude: 40.013305,
-                　　longitude: 118.685713,
+                    　　latitude: 40.013305,
+                    　　longitude: 118.685713,
                         iconPath:'',
                         title: 'test'
                     }
                 ],
-                date: '2020-01-20'
+                date: '2020-01-30'
 			}
         },
         computed: {
@@ -81,23 +83,25 @@
             endDate() {
                 return getDate('end');
             },
-            // polylines(){
-                
-            //     uni.request({
-            //         url:'https://service-9nqsnd2b-1301203847.bj.apigw.tencentcs.com/release/js_func',
 
-            //         success: (data, status)=>{
-            //             console.log('requrest status ' + status);
-            //             // console.log(data);
-            //             this.polylines
-            //     }});
-            // }
+        },
+        onLoad() {
+            let that = this;
+            uni.getLocation({
+                type: 'gcj02',
+                success: function (res) {
+                    console.log('当前位置的经度：' + res.longitude);
+                    console.log('当前位置的纬度：' + res.latitude);
+                    that.longitude = res.longitude;
+                    that.latitude = res.latitude;
+                }
+            });
         },
         methods: {
             bindDateChange: function(e) {
+                console.log('date changed');
                 this.date = e.target.value;
                 let that = this;
-                console.log('date changed');
 
                 uni.request({
                     url:'https://service-9nqsnd2b-1301203847.bj.apigw.tencentcs.com/release/js_func',
@@ -106,7 +110,15 @@
                     }
                 }).then(data=>{
                     var [error, res]  = data;
-                    that.polylines = res.data.body;
+                    console.log(res.data.body);
+                    that.polylines = res.data.body.map(line => {
+                        return {
+                            points: line.points,
+                            color: "#FF4500",
+                            width: 1,
+                            arrowLine: true
+                        }
+                    });
                     console.log(res.data);
                 }).catch(error=>{
                     console.log(error);
@@ -117,3 +129,13 @@
        		
 	}
 </script>
+
+<style>
+	.content {
+		text-align: center;
+		height: 400upx;
+    }
+    .slice {
+        height: 100upx;
+    }
+</style>
