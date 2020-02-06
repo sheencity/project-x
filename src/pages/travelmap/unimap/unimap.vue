@@ -23,9 +23,7 @@
                 </view>
                 <view >
                     <map 
-                        style="width: 750rpx; height: 750rpx;" 
-                        :latitude="location.latitude" 
-                        :longitude="location.longitude" 
+                        style="width: 750rpx; height: 1000rpx;" 
                         :markers="covers"
                         :polyline="polylines">
                     </map>
@@ -34,54 +32,34 @@
 		</view>
 	</view>
 </template>
-<script>
-    function getDate(type) {
-		const date = new Date();
-	
-		let year = date.getFullYear();
-		let month = date.getMonth() + 1;
-		let day = date.getDate();
-	
-		if (type === 'start') {
-            year = year;
-            month = 1;
-            day = 1;
-		} else if (type === 'end') {
-			year = year + 2;
-		}
-		month = month > 9 ? month : '0' + month;;
-		day = day > 9 ? day : '0' + day;
-    
-		return `${year}-${month}-${day}`;
-	}
-
+<script>    
 	export default {
 		data() {
     		return {
                 title: 'map',
                 polylines: [],
-                location:{
-                　　latitude: 0,
-                　　longitude: 0,
-                },
+                // location:{
+                // 　　latitude: 0,
+                // 　　longitude: 0,
+                // },
                 covers:[
-                    {
-                        id: 1,
-                    　　latitude: 40.013305,
-                    　　longitude: 118.685713,
-                        iconPath:'',
-                        title: 'test'
-                    }
+                    // {
+                    //     id: 1,
+                    // 　　latitude: 40.013305,
+                    // 　　longitude: 118.685713,
+                    //     iconPath:'',
+                    //     title: 'test'
+                    // }
                 ],
                 date: '2020-01-30'
 			}
         },
         computed: {
             startDate(){
-                return getDate('start');
+                return this.getDate('start');
             },
             endDate() {
-                return getDate('end');
+                return this.getDate('end');
             },
 
         },
@@ -92,17 +70,19 @@
                 success: function (res) {
                     console.log('当前位置的经度：' + res.longitude);
                     console.log('当前位置的纬度：' + res.latitude);
-                    that.longitude = res.longitude;
-                    that.latitude = res.latitude;
                 }
             });
+            console.log('onload');
+            this.refreshMapCovers();
         },
         methods: {
             bindDateChange: function(e) {
                 console.log('date changed');
                 this.date = e.target.value;
+                this.refreshMapCovers();
+            },
+            refreshMapCovers(date){
                 let that = this;
-
                 uni.request({
                     url:'https://service-9nqsnd2b-1301203847.bj.apigw.tencentcs.com/release/js_func',
                     data:{
@@ -110,7 +90,7 @@
                     }
                 }).then(data=>{
                     var [error, res]  = data;
-                    console.log(res.data.body);
+                    // console.log(res.data.body);
                     that.polylines = res.data.body.map(line => {
                         return {
                             points: line.points,
@@ -124,7 +104,25 @@
                     console.log(error);
                 });
             },
+            getDate(type) {
+		        const date = new Date();
             
+                let year = date.getFullYear();
+                let month = date.getMonth() + 1;
+                let day = date.getDate();
+            
+                if (type === 'start') {
+                    year = year;
+                    month = 1;
+                    day = 1;
+                } else if (type === 'end') {
+                    year = year + 2;
+                }
+                month = month > 9 ? month : '0' + month;;
+                day = day > 9 ? day : '0' + day;
+            
+                return `${year}-${month}-${day}`;
+            }
         }
        		
 	}
