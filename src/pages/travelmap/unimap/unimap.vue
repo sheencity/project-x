@@ -24,6 +24,7 @@
                 <view >
                     <map 
                         style="width: 750rpx; height: 1000rpx;" 
+                        scale="6"
                         :markers="covers"
                         :polyline="polylines">
                     </map>
@@ -51,7 +52,7 @@
                     //     title: 'test'
                     // }
                 ],
-                date: '2020-01-30'
+                date: '2020-01-19'
 			}
         },
         computed: {
