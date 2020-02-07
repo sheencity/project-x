@@ -27,7 +27,13 @@ npm run build:mp-weixin
 
 Scan QR-Code using Wechat.
 
+![QR-Code](./docs/qr-code.png)
 
+![](./docs/image1.jpeg)
+![](./docs/image2.jpeg)
+![](./docs/image3.jpeg)
+![](./docs/image4.jpeg)
+![](./docs/image5.jpeg)
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
